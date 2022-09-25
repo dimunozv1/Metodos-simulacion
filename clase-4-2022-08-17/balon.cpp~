@@ -1,0 +1,19 @@
+#include <cmath>
+#include <iostream>
+//este va a ser nuestro balon
+class Cuerpo{  //datos internos que almacena, deben ser privados idealmente
+private:
+  double x,y,Vx,Vy,Fx,Fy,m,R;
+
+  //la parte publica son las ordenes que le pueden dar a las clases, todos deben
+  //saber que ordenes le pueden dar al cuerpo
+
+public:
+  void Inicie(double x0,double y0,double Vx0,double Vy0,double m0,double R0); //solo da valores iniciales, no necesita devolver nada
+};  
+
+  int main(void) {
+
+ 
+  return 0;
+} 
