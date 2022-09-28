@@ -6,7 +6,7 @@
 using namespace std;
 
 
-const double Err= 1.0e-09;
+const double Err= 1.0e-011;
 double f1(double r, double x1, double x2,double Lambda)
 {
     return -x1/r-Lambda*Lambda*x2;
@@ -51,7 +51,7 @@ double Biseccion(double a,double b){
 
 
   double lambda=(b+a)/2;
-  while((b-a)>Err){
+  while((b-a)/2>Err){
     lambda=(b+a)/2;
     
     if(f(a,0)*f(lambda,0)>=0){
@@ -64,21 +64,30 @@ double Biseccion(double a,double b){
   
 
      return lambda;
+     
 }
+
+//Imprimir los valores de lambda para los que la funcion es 0: correr como ./a.out 0
+//Imprimir los valores de la funcion con el cero i: ./a.out 1 i
+//i=0 va a imprimir la funcion usando el primer 0, i=1 con el primero etcetera
  int main(int argc,char** argv)
 {
  
   double abLambda[]={2.0,4.0,4.0,6.0,7.0,10.0,10.0,12.0};
   double Lambda0[4];
   int j=0;
-  // cout<<Biseccion(-4,4)<<endl;
+  int b=atoi(argv[1]);
+  if(b==0){ cout<< "Valores de lambda para los que R es 0: " <<endl;}
    for(int i =0;i<7;i++){
      if(i%2==0){
        Lambda0[j]=Biseccion(abLambda[i],abLambda[i+1]);
+       if(b==0){
+	 cout<<Lambda0[j]<<endl;}
        j+=1;
      }
    }
-  int a=atoi(argv[1]);
+   if(b==1){
+  int a=atoi(argv[2]);
   if(a<0){
     cout<< "Use un valor entero entre 0 y 3"<<endl;
     return 0;}
@@ -86,7 +95,8 @@ double Biseccion(double a,double b){
     cout<< "Use un valor entero entre 0 y 3"<<endl;
     return 0;}
  
-  f(Lambda0[a],1);
+   f(Lambda0[a],1);}
+   //cout<<Lambda0[a]<<endl;
     
  
     return 0;
