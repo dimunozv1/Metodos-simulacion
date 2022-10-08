@@ -29,44 +29,42 @@ private:
 public:
     void Inicie(double x0, double y0, double z0, double Vx0, double Vy0,
 		double Vz0, double m0, double R0);
-    void BorreFuerza(void);
-    void SumeFuerza(vector3D F0);
-    void start(double dt);
-    void Mueva_r(double dt,double coeficiente);
+  void BorreFuerza(void){F.load(0,0,0);};
+  void SumeFuerza(vector3D F0){F+=F0;};
+  void Mueva_r(double dt,double coeficiente);
     void Mueva_V(double dt,double coeficiente);
+    void Dibujese(void);
 
-
+     void Getr(void) { r.show(); }; //Inline
+   void GetF(void) {  F.show(); };
     double Getx(void) { return r.x(); }; //Inline
     double Gety(void) { return r.y(); }; //Inline
     double Getz(void) { return r.z(); }; //Inline
     friend class Colisionador;
 };
 
-void Cuerpo::start(double dt)
-{
-  V-=F*(dt/(2*m));
-}
+
 
 void Cuerpo::Inicie(double x0, double y0, double z0, double Vx0, double Vy0, double Vz0, double m0, double R0) {
- 
-    r.load(x0, y0, x0);
+  
+    r.load(x0, y0, z0);
     V.load(Vx0, Vy0, Vz0);
     m = m0; R = R0;
 }
-void Cuerpo::BorreFuerza(void) 
-{
 
-  F.load(0,0,0);
-}
-void Cuerpo::SumeFuerza(vector3D F0){
-  F+=F0;
-}
+
 void Cuerpo:: Mueva_r(double dt,double coeficiente){
   r+=V*(dt*coeficiente);
 }
 void Cuerpo::Mueva_V(double dt,double coeficiente){
   V+=F*(dt*coeficiente/m);
 }
+
+void Cuerpo::Dibujese(void){
+cout<<" , "<<r.x()<<"+"<<R<<"*cos(t),"<<r.y()<<"+"<<R<<"*sin(t)";
+}
+
+
 //----------Clase Colisionador------
 class Colisionador{
 private:
@@ -92,44 +90,80 @@ void Colisionador::CalculeFuerzaEntre(Cuerpo & Planeta1, Cuerpo& Planeta2){
   vector3D n;
   r21=Planeta2.r-Planeta1.r;
   d21=r21.norm();
+  // cout<<d21<<endl;
   n=r21/d21;
   double F=G*Planeta1.m*Planeta2.m*pow(d21,-2.0);
   vector3D F1=F*n;
   Planeta1.SumeFuerza(F1);
   Planeta2.SumeFuerza((-1)*F1);}
+
+//-------------------------- Funciones de Animacion -------------------
+
+void InicieAnimacion(void){
+cout<<"set terminal gif animate"<<endl;
+cout<<"set output 'Na.gif'"<<endl;
+cout<<"unset key"<<endl;
+cout<<"set xrange[-1500:1500]"<<endl;
+cout<<"set yrange[-1500:1500]"<<endl;
+cout<<"set size ratio -1"<<endl;
+cout<<"set parametric"<<endl;
+cout<<"set trange [0:7]"<<endl;
+cout<<"set isosamples 12"<<endl;
+}
+void InicieCuadro(void){
+cout<<"plot 0,0 ";
+}
+void TermineCuadro(void){
+cout<<endl;
+}
+
+//----------------------- Programa Principal ------------------------
   
 
   
 
 
-//----------- Funciones Globales -----------
 int main(void) {
     Cuerpo Planeta[N];
-    double m0 = 1047, m1 = 1,r=100;
+    double m0 = 1047, m1 = 1,r=1000;
     double M=m0+m1,x0=-m1*r/M,x1=m0*r/M;
-    double omega, V0, T;
-    double t, dt = 0.1;
-    int i=0;
+    double omega, V0, T,V1;
+    double t,tmax, dt = 0.1;
     Colisionador Newton;
     
     
-    omega = sqrt(G*M / (r * r * r));
+    omega = sqrt(G*M*pow(r,-3.0));
     V0 = omega * x0;
     T = 2 * M_PI / omega;
-    double V0=omega*x0;
-    double V1=omega*x1;
-    double t,tmax=1.1*T,dt=0.01;
-    double tdibujo,tcuadro=T/500;
+    V1=omega*x1;
+    tmax=20*T;
+    dt=0.1;
+    double tdibujo,tcuadro=T/200;
     int i;
 
     //------------(x0,y0,z0,Vx0,Vy0,Vz0,m0,R0)
-    Planeta[0].Inicie(x0, 0, 0, 0, V0,0, m0, 1.0);
-    Planeta[1].Inicie(x1, 0, 0, 0, V1 ,0, m1, 0.5);
-    //Mover por PEFRL
- 
-    for (t = 0; t < 1.1 * T; t += dt) {
-        cout << Planeta[1].Getx() << " " << Planeta[1].Gety() << endl;
-
+    //double x0, double y0, double z0, double Vx0, double Vy0, double Vz0, double m0, double R0
+    Planeta[0].Inicie(x0, 0, 0, 0, V0,0, m0, 100);
+    Planeta[1].Inicie(x1, 0, 0, 0, V1 ,0, m1, 40 );
+    //Comandos gnuplot
+    InicieAnimacion();
+    int flag=1;
+   
+    for (t = 0,tdibujo=0; t < tmax; t += dt,tdibujo+=dt) {
+      
+     
+      if(flag==1){
+      if(tdibujo>tcuadro){
+	InicieCuadro();
+	for(int i=0;i<N;i++){
+	  Planeta[i].Dibujese();}
+	TermineCuadro();
+	tdibujo=0;
+      }
+      }
+      // cout<<Planeta[0].GetF()<<"\t"<<Planeta[1].GetF()<<endl;
+      //Mover por PEFRL
+	
 	for(i=0;i<N;i++){
 	  Planeta[i].Mueva_r(dt,Zeta);}
 
@@ -158,20 +192,4 @@ int main(void) {
     return 0;
 }
 
-void InicieAnimacion(void){
-  //  cout<<"set terminal gif animate"<<endl; 
-  //  cout<<"set output 'DosPlanetas.gif'"<<endl;
-  cout<<"unset key"<<endl;
-  cout<<"set xrange[-12:12]"<<endl;
-  cout<<"set yrange[-12:12]"<<endl;
-  cout<<"set size ratio -1"<<endl;
-  cout<<"set parametric"<<endl;
-  cout<<"set trange [0:7]"<<endl;
-  cout<<"set isosamples 12"<<endl;  
-}
-void InicieCuadro(void){
-    cout<<"plot 0,0 ";
-}
-void TermineCuadro(void){
-    cout<<endl;
-}
+
