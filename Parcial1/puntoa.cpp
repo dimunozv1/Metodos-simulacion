@@ -91,10 +91,10 @@ void Colisionador::CalculeFuerzas(Cuerpo * Balon,double dt){
 //----------------- Funciones de Animacion ----------
 void InicieAnimacion(void){
   cout<<"set terminal gif animate"<<endl; 
-  cout<<"set output 'Gas2D.gif'"<<endl;
+  cout<<"set output 'Puntoa.gif'"<<endl;
   cout<<"unset key"<<endl;
   cout<<"set xrange[-8:30]"<<endl;
-  cout<<"set yrange[-1:5]"<<endl;
+  cout<<"set yrange[0:5]"<<endl;
   cout<<"set title \"Tiro parabolico con Fg\" "<<endl; 
   cout<<"set xlabel \"x\" "<<endl;
   cout<<"set ylabel \"z\" "<<endl; 
@@ -119,7 +119,7 @@ int main(void){
   double m0=0.43, R0=0.5, V0=20;
   int i;
   
-  double t,tdibujo,tmax=2*V0*sin(Gamma)/g,tcuadro=tmax/5000,dt=1e-3;
+  double t,tdibujo,tmax=2*V0*sin(Gamma)/g,tcuadro=tmax/200,dt=1e-3;
  
   
   InicieAnimacion(); //Dibujar
