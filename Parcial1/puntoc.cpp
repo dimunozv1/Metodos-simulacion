@@ -142,7 +142,7 @@ int i;
 double t,tdibujo,tmax=2*V0*sin(Gamma)/g,tcuadro=tmax/200,dt=1e-3;
 
 
-InicieAnimacion(); //Dibujar
+//InicieAnimacion(); //Dibujar
 
 //Inicializar el Balon
 
