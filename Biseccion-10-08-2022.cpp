@@ -10,15 +10,15 @@ const double Err= 1.0e-07;
   int main(void) {
 
   double x;
-  double a=2;
+  double a=2 ;
   double b=4;
   double m=(b+a)/2;
   while((b-a)/2>Err){
     m=(b+a)/2;
-    if(f(a)*f(m)>0){
+    if(f(a)*f(m)>=0){
       a=m;
     }
-    if(f(b)*f(m)>0){
+    if(f(b)*f(m)>=0){
       b=m;
     }
      }

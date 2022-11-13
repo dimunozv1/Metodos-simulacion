@@ -119,7 +119,7 @@ int main(void){
   double m0=0.43, R0=0.5, V0=20;
   int i;
   
-  double t,tdibujo,tmax=2*V0*sin(Gamma)/g,tcuadro=tmax/200,dt=1e-3;
+  double t,tdibujo,tmax=2*V0*sin(Gamma)/g,tcuadro=tmax/200,dt=1e-4;
  
   
   InicieAnimacion(); //Dibujar
