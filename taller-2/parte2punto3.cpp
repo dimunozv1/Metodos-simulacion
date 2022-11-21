@@ -192,7 +192,8 @@ double stress;
 double Fxp, Fyp;
 int R=Rc;
 double R2=R*R;
-double Magnus=0.5*P*2*R*Ufan0;
+double Magnus=-0.5*P*M_PI*R2*R*Ufan0*omega;
+
 for(int i=0;i<N;i++)
 {
 Px=Rc*dA_dir[2*i ]+ixc;
@@ -266,8 +267,8 @@ fnew[n0]=f_eq(rho0,Ufan,0,i);
 
 }
 else if( (ix-ixc)*(ix-ixc)+(iy-iyc)*(iy-iyc) <= R2 )
-  { Ux0=0;
-    Uy0=0;
+  { Ux0=-omega*(iy-iyc);
+    Uy0=omega*(ix-ixc);
     
 for(i=0;i<Q;i++)
 {
